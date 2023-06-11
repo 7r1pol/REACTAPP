@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import { getArticles } from "../services/apiService";
 
 
-function SearchForm({ closeSideBar, submitedData, setSubmitedData }) {
+function SearchForm({ closeSideBar, submitedData, setSubmitedData, handleRestore }) {
     const [articlesSortDisabled, setArticlesSortDisabled] = useState(false);
 
     const resultType = [
@@ -77,7 +77,7 @@ function SearchForm({ closeSideBar, submitedData, setSubmitedData }) {
 
         console.log("data", data);
 
-        getArticles(data).then((res) => console.log("res", res));
+        getArticles(data).then((res) => console.log('res', res));
 
         closeSideBar();
     };
@@ -173,6 +173,10 @@ function SearchForm({ closeSideBar, submitedData, setSubmitedData }) {
 
             <Button variant="primary" type="submit" className="w-100">
                 Search
+            </Button>
+
+            <Button variant="light" type="submit" className="w-100 mt-3" onClick={handleRestore}>
+                Restore
             </Button>
         </Form>
     );
