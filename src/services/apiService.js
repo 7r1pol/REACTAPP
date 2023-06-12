@@ -1,21 +1,35 @@
-const apiUrl = 'http://eventregistry.org/api/v1/';
+import moment from "moment";
+
+const apiUrl = 'http://eventregistry.org/api/v1';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
 export const defaultData = {
     keyword: 'Elon Musk',
-    resultType: "articles",
+    resultType: "asdasd",
     articlesSortBy: "articles",
     dataType: "news",
     lang: "eng",
-    dateStart: "2023-06-01",
+    dateStart: moment().subtract(1, 'month').format('YYYY-MM-DD'),
 };
 
 export async function getArticles(params = null) {
+     const urlParams = new URLSearchParams({...(params || defaultData), apiKey }); 
+    
+     const response = await fetch(`${apiUrl}/article/getArticles?${urlParams}`);
 
-    const urlParams = new URLSearchParams({...(params || defaultData), apiKey });
+    if(!response.ok) {
+        throw new Error('Error in response, status code: ' + response.status);
+    }
 
-    const response = await fetch(`${apiUrl}/article/getArticles?${urlParams}`);
+        const data = await response.json();
 
-    return await response.json();
-}
+        if(data.error) {
+            throw new Error('Api error: ' + data.error);
+        }
+
+        return data;
+    } 
+    
+
+

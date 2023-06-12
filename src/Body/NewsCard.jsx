@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Card from "react-bootstrap/Card";
 import NewsModal from "./NewsModal";
-
+import moment from "moment";
 
 
 function NewsCard({ news }) {
@@ -26,7 +26,9 @@ function NewsCard({ news }) {
               </Card.Text>
             </Card.Body>
             <Card.Footer>
-              <small className="text-muted">Last updated 3 mins ago</small>
+              <small className="text-muted">
+                {moment(news.daTime).format("DD.MM.YYYY HH:mm:ss")}
+                </small>
             </Card.Footer>
           </Card>
           {showModal && <NewsModal news={news} handleClose={handleClose} />}
