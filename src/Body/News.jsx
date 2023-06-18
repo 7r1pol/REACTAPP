@@ -4,41 +4,56 @@ import Row from "react-bootstrap/Row";
 import NewsCard from "./NewsCard";
 import { getArticles } from "../services/apiService";
 import ErrorModal from "../services/ErrorModal";
-import Alert from 'react-bootstrap/Alert';
+import Alert from "react-bootstrap/Alert";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function News({ newsList, setNewsList, setInfo, info }) {
-    const [errorMessage, setErrorMessage] = useState(null);
-   
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [page, setPage] = useState(1);
 
 
   useEffect(() => {
-    getArticles()
+    getArticles({ articlesPage: page })
       .then(({ articles, info }) => {
-        articles && setNewsList(articles.results);
+        articles && setNewsList([...(newsList || []), ...articles.results]);
         info ? setInfo(info) : setInfo(null);
-    })
-    .catch((error) => setErrorMessage(error.toString()));
-  }, [setNewsList, setInfo]);
-
-
+      })
+      .catch((error) => setErrorMessage(error.toString()));
+  }, [setNewsList, setInfo, page]);
 
   return (
-    <>
-    {info && (
-      <Alert variant="primary">
-        {info}
-      </Alert>
-    )}
-    <Row xs={1} md={2} lg={3} className="g-4">
-      {newsList?.map((news, idx) => (
-        <Col key={idx}>
-          <NewsCard news={news} />
-        </Col>
-      ))}
-    </Row>
-    <ErrorModal errorMessage={errorMessage} handleClose={() => setErrorMessage(null)}/>
-    </>
-  );
-}
+  <>
+    {info && <Alert variant="primary">{info}</Alert>}
+    {newsList?.length && (
+    <InfiniteScroll
+      dataLength={newsList?.length}
+      next={() => setPage(page + 1)}
+      hasMore
+      loader={<h4>Loading...</h4>}
+      endMessage={
+        <p style={{ textAlign: "center" }}>
+          <b>Yay! You have seen it all</b>
+        </p>
+      }
+      >
+      <Row xs={1} md={2} lg={3} className="g-4">
+        {newsList?.map((news, idx) => (
+          <Col key={idx}>
+            <NewsCard news={news} />
+          </Col>
+        ))}
+      </Row>
+    </InfiniteScroll>
+  )}
 
-export default News;
+
+<ErrorModal
+  errorMessage={errorMessage}
+  handleClose={() => setErrorMessage(null)}
+/>
+</>
+  );
+        }
+
+
+  export default News;
