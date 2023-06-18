@@ -5,13 +5,12 @@ import NewsCard from "./NewsCard";
 import { getArticles } from "../services/apiService";
 import ErrorModal from "../services/ErrorModal";
 
-function News() {
-
-  const [newsList, setNewsList] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+function News({ newsList, setNewsList }) {
+    const [errorMessage, setErrorMessage] = useState(null);
   
   useEffect(() => {
-    getArticles().then((data) => {
+    getArticles()
+    .then((data) => {
       setNewsList(data.articles.results);
     })
     .catch((error) => setErrorMessage(error.toString()));

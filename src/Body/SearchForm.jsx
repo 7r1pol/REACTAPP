@@ -2,10 +2,17 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { getArticles } from "../services/apiService";
+import ErrorModal from "../services/ErrorModal";
 
-
-function SearchForm({ closeSideBar, submitedData, setSubmitedData, handleRestore }) {
+function SearchForm({
+     closeSideBar, 
+     submitedData, 
+     setSubmitedData, 
+     handleRestore, 
+     setNewsList,
+    }) {
     const [articlesSortDisabled, setArticlesSortDisabled] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const resultType = [
         "articles",
@@ -77,9 +84,13 @@ function SearchForm({ closeSideBar, submitedData, setSubmitedData, handleRestore
 
         console.log("data", data);
 
-        getArticles(data).then((res) => console.log('res', res));
+        getArticles(data)
+        .then((res) => {
+            closeSideBar();
+            setNewsList(res.articles.results);
+        })
+        .catch((error) => setErrorMessage(error.toString()));
 
-        closeSideBar();
     };
 
     const handleResultTypeChange = (event) => {
@@ -91,6 +102,7 @@ function SearchForm({ closeSideBar, submitedData, setSubmitedData, handleRestore
     };
 
     return (
+        <>
         <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
                 <Form.Label>Keywords</Form.Label>
@@ -179,6 +191,8 @@ function SearchForm({ closeSideBar, submitedData, setSubmitedData, handleRestore
                 Restore
             </Button>
         </Form>
+        <ErrorModal errorMessage={errorMessage} handleClose={() => setErrorMessage(null)}/>               
+         </>               
     );
 }
 
