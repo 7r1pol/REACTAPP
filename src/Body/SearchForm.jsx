@@ -9,7 +9,7 @@ function SearchForm({
      submitedData, 
      setSubmitedData, 
      handleRestore, 
-     setNewsList,
+     setDataList,
      setInfo,
     }) {
     const [articlesSortDisabled, setArticlesSortDisabled] = useState(false);
@@ -67,16 +67,13 @@ function SearchForm({
     const handleSubmit = (event) => {
         event.preventDefault();
 
+
         const data = {
             keyword: event.target.keyword.value,
             resultType: event.target.resultType.value,
             articlesSortBy: event.target.articlesSortBy.value,
-            dataType: [...event.target.dataType]
-                .filter((e) => e.checked)
-                .map((d) => d.value),
-            lang: [...event.target.lang]
-                .filter((e) => e.selected)
-                .map((d) => d.value),
+            dataType: event.target.dataType.value,
+            lang: event.target.lang.value,
             dateStart: event.target.dateStart.value,
             dateEnd: event.target.dateEnd.value,
         };
@@ -87,7 +84,7 @@ function SearchForm({
 
         getArticles(data)
         .then(({ articles, info }) => {
-            articles && setNewsList(articles.results);
+            articles && setDataList(articles.results);
             info ? setInfo(info) : setInfo(null);
             closeSideBar();
         })
@@ -146,7 +143,7 @@ function SearchForm({
                 <Form.Label>Data type</Form.Label>
                 {dataType.map((type) => (
                     <Form.Check
-                        type="checkbox"
+                        type="radio"
                         label={type}
                         key={type}
                         name="dataType"
@@ -158,7 +155,7 @@ function SearchForm({
 
             <Form.Group className="mb-3">
                 <Form.Label>Language</Form.Label>
-                <Form.Select name="lang" multiple defaultValue={submitedData?.lang}>
+                <Form.Select name="lang" defaultValue={submitedData?.lang}>
                     {languages.map(({ value, label }) => (
                         <option value={value} key={value}>
                             {label},
@@ -192,7 +189,8 @@ function SearchForm({
                 Restore
             </Button>
         </Form>
-        <ErrorModal errorMessage={errorMessage} handleClose={() => setErrorMessage(null)}/>               
+        <ErrorModal errorMessage={errorMessage} 
+        handleClose={() => setErrorMessage(null)}/>               
          </>               
     );
 }

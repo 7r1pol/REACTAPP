@@ -1,60 +1,38 @@
 import { useEffect, useState } from "react";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import NewsCard from "./NewsCard";
 import { getArticles } from "../services/apiService";
 import ErrorModal from "../services/ErrorModal";
-import Alert from "react-bootstrap/Alert";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { useParams } from "react-router-dom";
+import DataList from "./DataList";
 
-function News({ newsList, setNewsList, setInfo, info }) {
+
+function News({ dataList, setDataList, setInfo, info }) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [page, setPage] = useState(1);
 
+  const { keyword } = useParams();
 
   useEffect(() => {
-    getArticles({ articlesPage: page })
+    getArticles({ 
+          articlesPage: page, 
+          ...(keyword ? { keyword } : {}),
+        })
       .then(({ articles, info }) => {
-        articles && setNewsList([...(newsList || []), ...articles.results]);
+        articles && setDataList([...(dataList || []), ...articles.results]);
         info ? setInfo(info) : setInfo(null);
       })
       .catch((error) => setErrorMessage(error.toString()));
-  }, [setNewsList, setInfo, page]);
+  }, [setDataList, setInfo, page, keyword]);
 
   return (
-  <>
-    {info && <Alert variant="primary">{info}</Alert>}
-    {newsList?.length && (
-    <InfiniteScroll
-      dataLength={newsList?.length}
-      next={() => setPage(page + 1)}
-      hasMore
-      loader={<h4>Loading...</h4>}
-      endMessage={
-        <p style={{ textAlign: "center" }}>
-          <b>Yay! You have seen it all</b>
-        </p>
-      }
-      scrollThreshold={1}
-      >
-      <Row xs={1} md={2} lg={3} className="g-4">
-        {newsList?.map((news, idx) => (
-          <Col key={idx}>
-            <NewsCard news={news} />
-          </Col>
-        ))}
-      </Row>
-    </InfiniteScroll>
-  )}
-
-
-<ErrorModal
-  errorMessage={errorMessage}
-  handleClose={() => setErrorMessage(null)}
-/>
-</>
+    <>
+    <DataList info={info} dataList={dataList} page={page} setPage={setPage}/>
+    <ErrorModal
+          errorMessage={errorMessage}
+          handleClose={() => setErrorMessage(null)}
+        />
+    </>
   );
-        }
+}
 
 
-  export default News;
+export default News;
