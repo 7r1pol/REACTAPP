@@ -5,18 +5,16 @@ import { Routes, Route } from 'react-router-dom';
 import Events from "./Events";
 
 function Body() {
-    const [dataList, setDataList] = useState(null);
+
     const [info, setInfo] = useState(null);
 
     const props = {
       info, 
       setInfo,
-      dataList,
-      setDataList,
     };
     return (
         <>
-            <SideBar setDataList={setDataList} setInfo={setInfo} />
+            <SideBar />
             <Routes>
                 <Route path="/" element={<News {...props} />} />
                 <Route path="/:keyword" element={<News {...props} />} />

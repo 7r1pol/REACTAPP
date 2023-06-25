@@ -4,7 +4,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import SearchForm from './SearchForm';
 import { defaultData } from '../services/apiService';
 
-function SideBar({ setDataList, setInfo }) {
+function SideBar() {
   const [show, setShow] = useState(false);
   const [submitedData, setSubmitedData] = useState(defaultData);
 
@@ -28,8 +28,6 @@ function SideBar({ setDataList, setInfo }) {
          submitedData={submitedData} 
          setSubmitedData={setSubmitedData}
          handleRestore={handleRestore}
-         setDataList={setDataList}
-         setInfo={setInfo}
          />
         </Offcanvas.Body>
       </Offcanvas>
