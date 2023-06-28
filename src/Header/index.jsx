@@ -7,7 +7,7 @@ function Header() {
   return (
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Link to="/" className="navbar-brand">News</Link>
+          <Link to="/news" className="navbar-brand">News</Link>
           <Nav className="me-auto">
             <Link to="/events" className="nav-link">Events</Link>
             <Link to="/events/Summer2023" className="nav-link">Barack Obama Events</Link>
