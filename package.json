@@ -2,7 +2,7 @@
   "name": "news-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://7r1pol.github.io/REACTAPP",
+  "homepage": "https://7r1pol.github.io/news",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "bootstrap": "^5.2.3",
