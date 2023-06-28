@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 
 function News({ setInfo, info }) {
-  console.log("News");
+
 
   
   const searchData = useSelector((state) => state.searchData); 

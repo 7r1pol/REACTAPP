@@ -10,7 +10,7 @@ function Header() {
           <Link to="/" className="navbar-brand">News</Link>
           <Nav className="me-auto">
             <Link to="/events" className="nav-link">Events</Link>
-            <Link to="/events/Summer2023" className="nav-link">Summer2023</Link>
+            <Link to="/events/Summer2023" className="nav-link">Barack Obama Events</Link>
             <Link to="/events/Elon Musk" className="nav-link">Elon Musk</Link>
             <Link to="/Barak Obama" className="nav-link">Barak Obama</Link>
           </Nav>
